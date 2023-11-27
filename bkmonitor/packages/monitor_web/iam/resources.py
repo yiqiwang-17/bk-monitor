@@ -14,12 +14,6 @@ from urllib.parse import urljoin
 
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
-from monitor.models import GlobalConfig
-from monitor_web.grafana.auth import GrafanaAuthSync
-from monitor_web.iam.serializers import (
-    ExternalPermissionApplyRecordSerializer,
-    ExternalPermissionSerializer,
-)
 from rest_framework import serializers
 
 from api.itsm.default import TokenVerifyResource
@@ -37,6 +31,12 @@ from bkmonitor.models.external_iam import (
 from bkmonitor.utils.request import get_request, get_request_username
 from bkmonitor.utils.user import get_local_username
 from core.drf_resource import Resource, api, resource
+from monitor.models import GlobalConfig
+from monitor_web.grafana.auth import GrafanaAuthSync
+from monitor_web.iam.serializers import (
+    ExternalPermissionApplyRecordSerializer,
+    ExternalPermissionSerializer,
+)
 
 logger = logging.getLogger("iam")
 
@@ -256,7 +256,7 @@ class CreateOrUpdateExternalPermission(Resource):
         bk_biz_id = serializers.IntegerField(required=True, label="业务ID")
         action_id = serializers.CharField(required=True, label="操作ID")
         authorizer = serializers.CharField(required=True, label="授权人")
-        authorized_users = serializers.ListField(required=False, label="被授权人列表")
+        authorized_users = serializers.ListField(required=False, label="被授权人列表", child=serializers.CharField())
         resources = serializers.ListField(required=False, label="资源列表")
         expire_time = serializers.DateTimeField(required=False, label="过期时间", default=None)
         view_type = serializers.CharField(label="视图类型", default="user")
@@ -279,6 +279,9 @@ class CreateOrUpdateExternalPermission(Resource):
         """
         space_info = {i.bk_biz_id: i for i in SpaceApi.list_spaces()}
         bk_biz_name = space_info[params["bk_biz_id"]].space_name
+        resources = resource.grafana.get_dashboard_list(bk_biz_id=params["bk_biz_id"])
+        resource_id_to_name = {resource_obj["uid"]: resource_obj["text"] for resource_obj in resources}
+        resource_names = [resource_id_to_name.get(resource_uid, resource_uid) for resource_uid in params["resources"]]
         ticket_data = {
             "creator": get_request_username() or get_local_username(),
             "fields": [
@@ -286,8 +289,8 @@ class CreateOrUpdateExternalPermission(Resource):
                 {"key": "bk_biz_name", "value": bk_biz_name},
                 {"key": "title", "value": "对外版监控平台授权审批"},
                 {"key": "expire_time", "value": params["expire_time"].strftime("%Y-%m-%d %H:%M:%S")},
-                {"key": "authorized_user", "value": ",".join(authorized_users)},
-                {"key": "resources", "value": ",".join(params["resources"])},
+                {"key": "authorized_user", "value": "、".join(authorized_users)},
+                {"key": "resources", "value": "、".join(resource_names)},
             ],
             "service_id": settings.EXTERNAL_APPROVAL_SERVICE_ID,
             "fast_approval": False,
