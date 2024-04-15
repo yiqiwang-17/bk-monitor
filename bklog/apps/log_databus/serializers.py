@@ -423,7 +423,7 @@ class CollectorUpdateSerializer(serializers.Serializer):
 
     collector_config_name = serializers.CharField(label=_("采集名称"), max_length=50)
     collector_config_name_en = serializers.RegexField(
-        label=_("采集英文名称"), min_length=5, max_length=50, regex=COLLECTOR_CONFIG_NAME_EN_REGEX
+        label=_("采集英文名称"), min_length=5, regex=COLLECTOR_CONFIG_NAME_EN_REGEX
     )
     target_object_type = serializers.CharField(label=_("目标类型"))
     target_node_type = serializers.CharField(label=_("节点类型"))
@@ -1150,7 +1150,7 @@ class UpdateCollectorPluginInstanceSerializer(serializers.Serializer):
     collector_config_id = serializers.IntegerField(label=_("采集项ID"))
     collector_config_name = serializers.CharField(label=_("采集名称"), max_length=50)
     collector_config_name_en = serializers.RegexField(
-        label=_("采集英文名称"), min_length=5, max_length=50, regex=COLLECTOR_CONFIG_NAME_EN_REGEX
+        label=_("采集英文名称"), min_length=5, regex=COLLECTOR_CONFIG_NAME_EN_REGEX
     )
     target_object_type = serializers.CharField(label=_("目标类型"))
     target_node_type = serializers.CharField(label=_("节点类型"))
