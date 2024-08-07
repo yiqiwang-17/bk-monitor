@@ -103,4 +103,9 @@ export default {
   已通知: 'Notified',
   已流控: 'Throttled',
   字段设置: 'Field Settings',
+
+  未恢复告警数: 'Unrecovered Alarm Count',
+  '名称 A-Z ': 'Name A-Z',
+  节点层级: 'Node Level',
+  监控数据项: 'Monitor Data Item',
 };

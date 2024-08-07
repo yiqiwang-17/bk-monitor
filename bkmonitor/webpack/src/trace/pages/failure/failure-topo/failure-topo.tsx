@@ -110,7 +110,7 @@ export default defineComponent({
       },
     },
   },
-  emits: ['toDetail', 'playing', 'toDetailTab', 'changeSelectNode'],
+  emits: ['toDetail', 'playing', 'toDetailTab', 'changeSelectNode', 'refresh'],
   setup(props, { emit }) {
     /** 缓存resize render后执行的回调函数，主要用于点击播放之前收起右侧资源图时的回调 */
     const resizeCacheCallback = ref(null);
@@ -772,8 +772,8 @@ export default defineComponent({
         },
         onDragEnd() {
           // 清除临时信息
-          delete this.currentComboId;
-          delete this.currentNodes;
+          this.currentComboId = undefined;
+          this.currentNodes = undefined;
         },
       });
       // 自定义拖拽
@@ -1653,7 +1653,7 @@ export default defineComponent({
             });
           }
         } else {
-          /** diff中的节点 comboId没有经过布局处理，延用node之前已设置过的id即可 */
+          /** diff中的节点  comboId没有经过布局处理，延用node之前已设置过的id即可 */
           graph.updateItem(node, { ...item, comboId: model.comboId, subComboId: model.subComboId });
         }
       });
@@ -1869,6 +1869,9 @@ export default defineComponent({
       };
       emit('toDetailTab', alertObj);
     };
+    const refresh = () => {
+      emit('refresh');
+    };
     return {
       isPlay,
       nodeEntityId,
@@ -1908,6 +1911,7 @@ export default defineComponent({
       handleToDetailSlider,
       handleToDetailTab,
       detailInfo,
+      refresh,
     };
   },
   render() {
@@ -2087,6 +2091,7 @@ export default defineComponent({
           data={this.feedbackModel}
           visible={this.feedbackCauseShow}
           onEditSuccess={this.handleFeedBackChange}
+          onRefresh={this.refresh}
           onUpdate:isShow={(val: boolean) => (this.feedbackCauseShow = val)}
         />
         <div style='display: none'>
