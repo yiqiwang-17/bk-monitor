@@ -218,7 +218,9 @@ export default class IncidentTable extends tsc<IEventTableProps, IEventTableEven
                         <div class='tag-item set-item'>
                           {typeof row.labels[0] === 'string'
                             ? row.labels[0].replace(/\//g, '')
-                            : `${row.labels[0].key}: ${row.labels[0].value.replace(/\//g, '')}`}
+                            : row.labels[0]?.key
+                              ? `${row.labels[0].key}: ${row.labels[0].value.replace(/\//g, '')}`
+                              : '--'}
                         </div>
                         {row.labels.length > 1 && (
                           <bk-popover>

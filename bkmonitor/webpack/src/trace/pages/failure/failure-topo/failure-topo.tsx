@@ -62,7 +62,7 @@ import FeedbackCauseDialog from './feedback-cause-dialog';
 import formatTopoData from './format-topo-data';
 import { NODE_TYPE_SVG } from './node-type-svg';
 import TopoTools from './topo-tools';
-import { getNodeAttrs } from './utils';
+import { getNodeAttrs, truncateText } from './utils';
 
 import type { IEdge, IEntity, ITopoData, ITopoNode, IncidentDetailData } from './types';
 
@@ -226,7 +226,7 @@ export default defineComponent({
                 y: 20,
                 textAlign: 'center',
                 textBaseline: 'middle',
-                text: t('根因'),
+                text: truncateText(t('根因'), 28, 11, 'PingFangSC-Medium'),
                 fontSize: 11,
                 fill: '#fff',
                 ...nodeAttrs.textAttrs,
@@ -370,7 +370,7 @@ export default defineComponent({
                 textAlign: 'center',
                 cursor: 'cursor',
                 textBaseline: 'middle',
-                text: entity.is_root || is_feedback_root ? t('根因') : aggregated_nodes.length + 1,
+                text: entity.is_root || is_feedback_root ? truncateText(t('根因'), 28, 11, 'PingFangSC-Medium') : aggregated_nodes.length + 1,
                 fontSize: 11,
                 fill: '#fff',
                 ...nodeAttrs.textAttrs,
