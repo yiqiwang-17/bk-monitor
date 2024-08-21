@@ -66,8 +66,7 @@ class IncidentQueryTransformer(BaseQueryTransformer):
     extra_info = field.Object(enabled=False)
     """
     query_fields = [
-        QueryField("id", _lazy("故障UUID")),
-        QueryField("incident_id", _lazy("故障内部ID")),
+        QueryField("id", _lazy("故障ID")),
         QueryField("incident_name", _lazy("故障名称")),
         QueryField("incident_reason", _lazy("故障原因")),
         QueryField("bk_biz_id", _lazy("业务ID")),
