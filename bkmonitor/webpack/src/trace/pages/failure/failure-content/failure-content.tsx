@@ -162,6 +162,12 @@ export default defineComponent({
         handleChangeActive(FailureContentTabView.FAILURE_TOPO);
       }
     );
+    watch(
+      () => currentNodeData.value,
+      () => {
+        handleChangeActive(FailureContentTabView.FAILURE_TOPO);
+      }
+    );
     const handleChangeSelectNode = (nodeId: string) => {
       emit('changeSelectNode', nodeId);
     };
