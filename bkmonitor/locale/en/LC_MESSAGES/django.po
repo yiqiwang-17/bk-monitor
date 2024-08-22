@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-21 11:09+0800\n"
+"POT-Creation-Date: 2024-08-22 10:18+0800\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 
 #, python-brace-format
@@ -1352,9 +1352,6 @@ msgstr "[Organic detection] Polymerization data source"
 
 msgid "多指标异常检测"
 msgstr "Multi -metric abnormal detection"
-
-msgid "主机场景"
-msgstr "Host Scene"
 
 msgid "指标推荐V2"
 msgstr "Recommended metrics V2"
@@ -5837,6 +5834,9 @@ msgstr "property of Module"
 msgid "主机属性"
 msgstr "property of Host"
 
+msgid "主机场景"
+msgstr "Host Scene"
+
 msgid "无"
 msgstr "No"
 
@@ -6855,18 +6855,14 @@ msgstr "Resource ID does not exist"
 msgid "资源ID不存在：{resource_id}"
 msgstr "Resource ID does not exist: {resource_id}"
 
-#, fuzzy
-#| msgid "插件模块错误"
 msgid "故障模块错误"
-msgstr "Plugin Module Error"
+msgstr "Incident Module Error"
 
 msgid "故障不存在"
 msgstr "Incident not found"
 
-#, fuzzy, python-brace-format
-#| msgid "告警ID ({alert_id}) 对应的告警信息不存在"
 msgid "故障 ({id}) 对应的故障信息不存在"
-msgstr "Alarm ID ({alert_id}) The corresponding alarm information does not exist"
+msgstr "Incident ID ({id}) The corresponding incident information does not exist"
 
 msgid "实体ID不在当前图谱中"
 msgstr "Entity ID not found in current incident snapshot"
@@ -8832,6 +8828,9 @@ msgstr "Current"
 msgid "故障ID"
 msgstr "Incident ID"
 
+msgid "故障主键"
+msgstr "Incident Key"
+
 msgid "故障名称"
 msgstr "Inciden Name"
 
@@ -8844,42 +8843,32 @@ msgstr "Incident Status"
 msgid "故障级别"
 msgstr "Incident Level"
 
-#, fuzzy
-#| msgid "受理人"
 msgid "处理人"
-msgstr "Controller"
+msgstr "Handler"
 
 msgid "故障检出时间"
-msgstr "Incident create time"
+msgstr "Incident Create Time"
 
-#, fuzzy
-#| msgid "更新时间"
 msgid "故障更新时间"
-msgstr "Update Time"
+msgstr "Incident Update Time"
 
-#, fuzzy
-#| msgid "开始时间"
 msgid "故障开始时间"
-msgstr "Start Time"
+msgstr "Incident Begin Time"
 
-#, fuzzy
-#| msgid "结束时间"
 msgid "故障结束时间"
-msgstr "End Time"
+msgstr "Incident End Time"
 
 msgid "故障图谱快照"
-msgstr "Incident graph snapshot"
+msgstr "Incident Graph Snapshot"
 
 msgid "故障告警数"
-msgstr "Incident alert count"
+msgstr "Incident Alert Count"
 
-#, fuzzy
-#| msgid "故障中"
 msgid "故障"
-msgstr "Failure"
+msgstr "Incident"
 
 msgid "我处理的"
-msgstr "My-Handlers"
+msgstr "My Handled"
 
 msgid "其他-其他"
 msgstr "Others-others"
