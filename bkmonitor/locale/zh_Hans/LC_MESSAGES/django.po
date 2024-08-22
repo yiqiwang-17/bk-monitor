@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-21 11:09+0800\n"
+"POT-Creation-Date: 2024-08-22 10:18+0800\n"
 "PO-Revision-Date: 2017-11-24 14:50+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: zh_Hans <LL@li.org>\n"
@@ -1376,9 +1376,6 @@ msgstr "【主机场景异常检测】聚合数据源"
 msgid "多指标异常检测"
 msgstr "多指标异常检测"
 
-msgid "主机场景"
-msgstr "主机场景"
-
 msgid "指标推荐V2"
 msgstr "指标推荐V2"
 
@@ -1950,10 +1947,8 @@ msgstr "环比振幅算法"
 msgid "智能异常检测算法"
 msgstr "智能异常检测算法"
 
-#, fuzzy
-#| msgid "智能异常检测算法"
 msgid "主机异常检测算法"
-msgstr "智能异常检测算法"
+msgstr "主机异常检测算法"
 
 msgid "致命"
 msgstr "致命"
@@ -5872,6 +5867,9 @@ msgstr "模块属性"
 msgid "主机属性"
 msgstr "主机属性"
 
+msgid "主机场景"
+msgstr "主机场景"
+
 msgid "无"
 msgstr "无"
 
@@ -6467,10 +6465,8 @@ msgstr "当前空间尚未接入[{func}]功能"
 msgid "主机智能异常检测结果内容异常"
 msgstr "主机智能异常检测结果内容异常"
 
-#, fuzzy
-#| msgid "AIOps功能未接入"
 msgid "AIOps功能未开启"
-msgstr "AIOps功能未接入"
+msgstr "AIOps功能未开启"
 
 #, fuzzy, python-brace-format
 #| msgid "当前空间尚未接入[{func}]功能"
@@ -8909,6 +8905,9 @@ msgstr "当前"
 msgid "故障ID"
 msgstr "故障ID"
 
+msgid "故障主键"
+msgstr "故障主键"
+
 msgid "故障名称"
 msgstr "故障名称"
 
@@ -8921,28 +8920,20 @@ msgstr "故障状态"
 msgid "故障级别"
 msgstr "故障级别"
 
-#, fuzzy
-#| msgid "受理人"
 msgid "处理人"
-msgstr "受理人"
+msgstr "处理人"
 
 msgid "故障检出时间"
 msgstr "故障检出时间"
 
-#, fuzzy
-#| msgid "更新时间"
 msgid "故障更新时间"
-msgstr "更新时间"
+msgstr "故障更新时间"
 
-#, fuzzy
-#| msgid "开始时间"
 msgid "故障开始时间"
-msgstr "开始时间"
+msgstr "故障开始时间"
 
-#, fuzzy
-#| msgid "结束时间"
 msgid "故障结束时间"
-msgstr "结束时间"
+msgstr "故障结束时间"
 
 msgid "故障图谱快照"
 msgstr "故障图谱快照"
@@ -8950,10 +8941,8 @@ msgstr "故障图谱快照"
 msgid "故障告警数"
 msgstr "故障告警数"
 
-#, fuzzy
-#| msgid "故障中"
 msgid "故障"
-msgstr "故障中"
+msgstr "故障"
 
 msgid "我处理的"
 msgstr "我处理的"
@@ -10381,10 +10370,8 @@ msgstr "应用ID(application_id)或者应用名称(application_name)不能同时
 msgid "未分派"
 msgstr "分派"
 
-#, fuzzy
-#| msgid "处理中"
 msgid "我处理"
-msgstr "处理中"
+msgstr "我处理"
 
 msgid "无法解析plugin_id"
 msgstr "无法解析plugin_id"
