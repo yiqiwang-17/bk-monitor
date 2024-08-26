@@ -10288,15 +10288,11 @@ msgstr "Dashboard User Guide"
 msgid "应用ID(application_id)或者应用名称(application_name)不能同时为空"
 msgstr "Application_id (Application_ID) or Application_name cannot be empty at the same time"
 
-#, fuzzy
-#| msgid "分派"
 msgid "未分派"
-msgstr "Dispatch"
+msgstr "Not Dispatch"
 
-#, fuzzy
-#| msgid "处理中"
 msgid "我处理"
-msgstr "Processing"
+msgstr "My Handling"
 
 msgid "无法解析plugin_id"
 msgstr "Unable to resolve plugin_id"
