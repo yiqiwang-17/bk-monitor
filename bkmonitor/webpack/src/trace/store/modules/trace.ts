@@ -323,6 +323,15 @@ export const useTraceStore = defineStore('trace', () => {
     tableSettings[key].checked = checked;
   }
 
+  /** 列表表头设置固定记住用户的选择 */
+  function setTableSetting() {
+    const traceCheckedSettings = window.localStorage.getItem('traceCheckedSettings');
+    if (traceCheckedSettings) {
+      tableSettings.value.trace.checked = JSON.parse(traceCheckedSettings);
+    }
+  }
+  setTableSetting();
+
   return {
     loading,
     traceLoading,
