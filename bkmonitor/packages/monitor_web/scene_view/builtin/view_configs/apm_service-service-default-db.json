@@ -34,9 +34,7 @@
           "data": {
             "app_name": "$app_name",
             "service_name": "$service_name",
-            "category": [
-              "db"
-            ]
+            "category": "db"
           },
           "fields": {
             "id": "bk_instance_id"
@@ -61,12 +59,10 @@
           "data_type": "time_series",
           "api": "apm_metric.dynamicUnifyQuery",
           "datasource": "time_series",
+          "alias": "总数量",
           "data": {
             "app_name": "${app_name}",
             "service_name": "${service_name}",
-            "category": "db",
-            "kind": "component",
-            "predicate_value": "",
             "component_instance_id": "$bk_instance_id",
             "unify_query_param": {
               "expression": "A",
@@ -134,9 +130,6 @@
           "data": {
             "app_name": "${app_name}",
             "service_name": "${service_name}",
-            "category": "db",
-            "kind": "component",
-            "predicate_value": "",
             "component_instance_id": "$bk_instance_id",
             "unify_query_param": {
               "type": "range",
@@ -205,9 +198,6 @@
           "data": {
             "app_name": "${app_name}",
             "service_name": "${service_name}",
-            "category": "db",
-            "kind": "component",
-            "predicate_value": "",
             "component_instance_id": "$bk_instance_id",
             "unify_query_param": {
               "type": "range",
@@ -272,13 +262,10 @@
           "data_type": "time_series",
           "api": "apm_metric.dynamicUnifyQuery",
           "datasource": "time_series",
-          "alias": "OTHER",
+          "alias": "总数量",
           "data": {
             "app_name": "${app_name}",
             "service_name": "${service_name}",
-            "category": "db",
-            "kind": "component",
-            "predicate_value": "",
             "component_instance_id": "$bk_instance_id",
             "unify_query_param": {
               "stack": "all",
@@ -312,22 +299,6 @@
                       "method": "eq",
                       "value": [
                         "2"
-                      ],
-                      "condition": "and"
-                    },
-                    {
-                      "key": "http_status_code",
-                      "method": "eq",
-                      "value": [
-                        ""
-                      ],
-                      "condition": "and"
-                    },
-                    {
-                      "key": "rpc_grpc_status_code",
-                      "method": "eq",
-                      "value": [
-                        ""
                       ],
                       "condition": "and"
                     }
@@ -367,13 +338,95 @@
           "data_type": "time_series",
           "api": "apm_metric.dynamicUnifyQuery",
           "datasource": "time_series",
+          "alias": "AVG",
+          "data": {
+            "app_name": "${app_name}",
+            "service_name": "${service_name}",
+            "component_instance_id": "$bk_instance_id",
+            "unit": "ns",
+            "unify_query_param": {
+              "expression": "a / b",
+              "query_configs": [
+                {
+                  "data_source_label": "custom",
+                  "data_type_label": "time_series",
+                  "metrics": [
+                    {
+                      "field": "bk_apm_duration_sum",
+                      "method": "SUM",
+                      "alias": "a"
+                    }
+                  ],
+                  "table": "${table_id}",
+                  "data_label": "",
+                  "index_set_id": null,
+                  "group_by": [],
+                  "where": [],
+                  "interval_unit": "s",
+                  "time_field": "time",
+                  "filter_dict": {
+                    "service_name": "${service_name}",
+                    "span_name": "$endpoint_name",
+                    "db_system": "$db_system"
+                  },
+                  "functions": [
+                    {
+                      "id": "increase",
+                      "params": [
+                        {
+                          "id": "window",
+                          "value": "2m"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "data_source_label": "custom",
+                  "data_type_label": "time_series",
+                  "metrics": [
+                    {
+                      "field": "bk_apm_total",
+                      "method": "SUM",
+                      "alias": "b"
+                    }
+                  ],
+                  "table": "${table_id}",
+                  "data_label": "",
+                  "index_set_id": null,
+                  "group_by": [],
+                  "where": [],
+                  "interval_unit": "s",
+                  "time_field": null,
+                  "filter_dict": {
+                    "service_name": "${service_name}",
+                    "span_name": "$endpoint_name",
+                    "db_system": "$db_system"
+                  },
+                  "functions": [
+                    {
+                      "id": "increase",
+                      "params": [
+                        {
+                          "id": "window",
+                          "value": "2m"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "data_type": "time_series",
+          "api": "apm_metric.dynamicUnifyQuery",
+          "datasource": "time_series",
           "alias": "P50",
           "data": {
             "app_name": "${app_name}",
             "service_name": "${service_name}",
-            "category": "db",
-            "kind": "component",
-            "predicate_value": "",
             "component_instance_id": "$bk_instance_id",
             "unify_query_param": {
               "expression": "A",
@@ -411,15 +464,15 @@
                     "db_system": "$db_system"
                   },
                   "functions": [
-                     {
-                    "id": "rate",
-                    "params": [
-                      {
-                        "id": "window",
-                        "value": "2m"
-                      }
-                    ]
-                  },
+                    {
+                      "id": "rate",
+                      "params": [
+                        {
+                          "id": "window",
+                          "value": "2m"
+                        }
+                      ]
+                    },
                     {
                       "id": "histogram_quantile",
                       "params": [
@@ -443,9 +496,6 @@
           "data": {
             "app_name": "${app_name}",
             "service_name": "${service_name}",
-            "category": "db",
-            "kind": "component",
-            "predicate_value": "",
             "component_instance_id": "$bk_instance_id",
             "unify_query_param": {
               "expression": "A",
@@ -483,15 +533,15 @@
                     "db_system": "$db_system"
                   },
                   "functions": [
-                     {
-                    "id": "rate",
-                    "params": [
-                      {
-                        "id": "window",
-                        "value": "2m"
-                      }
-                    ]
-                  },
+                    {
+                      "id": "rate",
+                      "params": [
+                        {
+                          "id": "window",
+                          "value": "2m"
+                        }
+                      ]
+                    },
                     {
                       "id": "histogram_quantile",
                       "params": [
@@ -515,9 +565,6 @@
           "data": {
             "app_name": "${app_name}",
             "service_name": "${service_name}",
-            "category": "db",
-            "kind": "component",
-            "predicate_value": "",
             "component_instance_id": "$bk_instance_id",
             "unify_query_param": {
               "expression": "B",
@@ -555,15 +602,15 @@
                     "db_system": "$db_system"
                   },
                   "functions": [
-                     {
-                    "id": "rate",
-                    "params": [
-                      {
-                        "id": "window",
-                        "value": "2m"
-                      }
-                    ]
-                  },
+                    {
+                      "id": "rate",
+                      "params": [
+                        {
+                          "id": "window",
+                          "value": "2m"
+                        }
+                      ]
+                    },
                     {
                       "id": "histogram_quantile",
                       "params": [
@@ -587,9 +634,6 @@
           "data": {
             "app_name": "${app_name}",
             "service_name": "${service_name}",
-            "category": "db",
-            "kind": "component",
-            "predicate_value": "",
             "component_instance_id": "$bk_instance_id",
             "unify_query_param": {
               "expression": "C",
@@ -639,9 +683,6 @@
           "data": {
             "app_name": "${app_name}",
             "service_name": "${service_name}",
-            "category": "db",
-            "kind": "component",
-            "predicate_value": "",
             "component_instance_id": "$bk_instance_id",
             "unify_query_param": {
               "expression": "C",
@@ -708,11 +749,6 @@
               "span_name": "$endpoint_name",
               "attributes.db.system": "$db_system"
             },
-            "service_params": {
-              "category": "db",
-              "kind": "component",
-              "predicate_value": ""
-            },
             "component_instance_id": "$bk_instance_id"
           }
         }
@@ -745,11 +781,6 @@
               "span_name": "$endpoint_name",
               "attributes.db.system": "$db_system"
             },
-            "service_params": {
-              "category": "db",
-              "kind": "component",
-              "predicate_value": ""
-            },
             "component_instance_id": "$bk_instance_id"
           },
           "dataType": "table",
@@ -774,7 +805,7 @@
     },
     {
       "id": 6,
-      "title": "异常",
+      "title": "异常事件",
       "type": "api_message",
       "targets": [
         {
@@ -785,12 +816,8 @@
               "span_name": "$endpoint_name",
               "attributes.db.system": "$db_system"
             },
-            "service_params": {
-              "category": "db",
-              "kind": "component",
-              "predicate_value": ""
-            },
-            "component_instance_id": "$bk_instance_id"
+            "component_instance_id": "$bk_instance_id",
+            "category": "db"
           },
           "dataType": "table",
           "api": "apm_meta.queryExceptionEvent"
@@ -827,12 +854,10 @@
           "data_type": "time_series",
           "api": "apm_metric.dynamicUnifyQuery",
           "datasource": "time_series",
+          "alias": "总数量",
           "data": {
             "app_name": "${app_name}",
             "service_name": "${service_name}",
-            "category": "db",
-            "kind": "component",
-            "predicate_value": "",
             "component_instance_id": "$bk_instance_id",
             "unify_query_param": {
               "expression": "A",
@@ -900,9 +925,6 @@
           "data": {
             "app_name": "${app_name}",
             "service_name": "${service_name}",
-            "category": "db",
-            "kind": "component",
-            "predicate_value": "",
             "component_instance_id": "$bk_instance_id",
             "unify_query_param": {
               "type": "range",
@@ -971,9 +993,6 @@
           "data": {
             "app_name": "${app_name}",
             "service_name": "${service_name}",
-            "category": "db",
-            "kind": "component",
-            "predicate_value": "",
             "component_instance_id": "$bk_instance_id",
             "unify_query_param": {
               "type": "range",
@@ -1038,13 +1057,10 @@
           "data_type": "time_series",
           "api": "apm_metric.dynamicUnifyQuery",
           "datasource": "time_series",
-          "alias": "OTHER",
+          "alias": "总数量",
           "data": {
             "app_name": "${app_name}",
             "service_name": "${service_name}",
-            "category": "db",
-            "kind": "component",
-            "predicate_value": "",
             "component_instance_id": "$bk_instance_id",
             "unify_query_param": {
               "stack": "all",
@@ -1078,22 +1094,6 @@
                       "method": "eq",
                       "value": [
                         "2"
-                      ],
-                      "condition": "and"
-                    },
-                    {
-                      "key": "http_status_code",
-                      "method": "eq",
-                      "value": [
-                        ""
-                      ],
-                      "condition": "and"
-                    },
-                    {
-                      "key": "rpc_grpc_status_code",
-                      "method": "eq",
-                      "value": [
-                        ""
                       ],
                       "condition": "and"
                     }
@@ -1133,13 +1133,104 @@
           "data_type": "time_series",
           "api": "apm_metric.dynamicUnifyQuery",
           "datasource": "time_series",
+          "alias": "AVG",
+          "data": {
+            "app_name": "${app_name}",
+            "service_name": "${service_name}",
+            "component_instance_id": "$bk_instance_id",
+            "unit": "ns",
+            "unify_query_param": {
+              "expression": "a / b",
+              "query_configs": [
+                {
+                  "data_source_label": "custom",
+                  "data_type_label": "time_series",
+                  "metrics": [
+                    {
+                      "field": "bk_apm_duration_sum",
+                      "method": "SUM",
+                      "alias": "a"
+                    }
+                  ],
+                  "table": "${table_id}",
+                  "data_label": "",
+                  "index_set_id": null,
+                  "group_by": [],
+                  "where": [
+                    {
+                      "key": "db_system",
+                      "method": "neq",
+                      "value": [
+                        ""
+                      ],
+                      "condition": "and"
+                    }
+                  ],
+                  "interval_unit": "s",
+                  "time_field": "time",
+                  "filter_dict": {
+                    "service_name": "${service_name}",
+                    "span_name": "$endpoint_name",
+                    "db_system": "$db_system"
+                  },
+                  "functions": [
+                    {
+                      "id": "increase",
+                      "params": [
+                        {
+                          "id": "window",
+                          "value": "2m"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "data_source_label": "custom",
+                  "data_type_label": "time_series",
+                  "metrics": [
+                    {
+                      "field": "bk_apm_total",
+                      "method": "SUM",
+                      "alias": "b"
+                    }
+                  ],
+                  "table": "${table_id}",
+                  "data_label": "",
+                  "index_set_id": null,
+                  "group_by": [],
+                  "where": [],
+                  "interval_unit": "s",
+                  "time_field": null,
+                  "filter_dict": {
+                    "service_name": "${service_name}",
+                    "span_name": "$endpoint_name",
+                    "db_system": "$db_system"
+                  },
+                  "functions": [
+                    {
+                      "id": "increase",
+                      "params": [
+                        {
+                          "id": "window",
+                          "value": "2m"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "data_type": "time_series",
+          "api": "apm_metric.dynamicUnifyQuery",
+          "datasource": "time_series",
           "alias": "P50",
           "data": {
             "app_name": "${app_name}",
             "service_name": "${service_name}",
-            "category": "db",
-            "kind": "component",
-            "predicate_value": "",
             "component_instance_id": "$bk_instance_id",
             "unify_query_param": {
               "expression": "A",
@@ -1177,15 +1268,15 @@
                     "db_system": "$db_system"
                   },
                   "functions": [
-                     {
-                    "id": "rate",
-                    "params": [
-                      {
-                        "id": "window",
-                        "value": "2m"
-                      }
-                    ]
-                  },
+                    {
+                      "id": "rate",
+                      "params": [
+                        {
+                          "id": "window",
+                          "value": "2m"
+                        }
+                      ]
+                    },
                     {
                       "id": "histogram_quantile",
                       "params": [
@@ -1209,9 +1300,6 @@
           "data": {
             "app_name": "${app_name}",
             "service_name": "${service_name}",
-            "category": "db",
-            "kind": "component",
-            "predicate_value": "",
             "component_instance_id": "$bk_instance_id",
             "unify_query_param": {
               "expression": "A",
@@ -1249,15 +1337,15 @@
                     "db_system": "$db_system"
                   },
                   "functions": [
-                     {
-                    "id": "rate",
-                    "params": [
-                      {
-                        "id": "window",
-                        "value": "2m"
-                      }
-                    ]
-                  },
+                    {
+                      "id": "rate",
+                      "params": [
+                        {
+                          "id": "window",
+                          "value": "2m"
+                        }
+                      ]
+                    },
                     {
                       "id": "histogram_quantile",
                       "params": [
@@ -1281,9 +1369,6 @@
           "data": {
             "app_name": "${app_name}",
             "service_name": "${service_name}",
-            "category": "db",
-            "kind": "component",
-            "predicate_value": "",
             "component_instance_id": "$bk_instance_id",
             "unify_query_param": {
               "expression": "B",
@@ -1321,15 +1406,15 @@
                     "db_system": "$db_system"
                   },
                   "functions": [
-                     {
-                    "id": "rate",
-                    "params": [
-                      {
-                        "id": "window",
-                        "value": "2m"
-                      }
-                    ]
-                  },
+                    {
+                      "id": "rate",
+                      "params": [
+                        {
+                          "id": "window",
+                          "value": "2m"
+                        }
+                      ]
+                    },
                     {
                       "id": "histogram_quantile",
                       "params": [
@@ -1353,9 +1438,6 @@
           "data": {
             "app_name": "${app_name}",
             "service_name": "${service_name}",
-            "category": "db",
-            "kind": "component",
-            "predicate_value": "",
             "component_instance_id": "$bk_instance_id",
             "unify_query_param": {
               "expression": "C",
@@ -1405,9 +1487,6 @@
           "data": {
             "app_name": "${app_name}",
             "service_name": "${service_name}",
-            "category": "db",
-            "kind": "component",
-            "predicate_value": "",
             "component_instance_id": "$bk_instance_id",
             "unify_query_param": {
               "expression": "C",
@@ -1474,11 +1553,6 @@
               "span_name": "$endpoint_name",
               "attributes.db.system": "$db_system"
             },
-            "service_params": {
-              "category": "db",
-              "kind": "component",
-              "predicate_value": ""
-            },
             "component_instance_id": "$bk_instance_id"
           }
         }
@@ -1511,11 +1585,6 @@
               "span_name": "$endpoint_name",
               "attributes.db.system": "$db_system"
             },
-            "service_params": {
-              "category": "db",
-              "kind": "component",
-              "predicate_value": ""
-            },
             "component_instance_id": "$bk_instance_id"
           },
           "dataType": "table",
@@ -1540,7 +1609,7 @@
     },
     {
       "id": 6,
-      "title": "异常",
+      "title": "异常事件",
       "type": "api_message",
       "targets": [
         {
@@ -1551,12 +1620,8 @@
               "span_name": "$endpoint_name",
               "attributes.db.system": "$db_system"
             },
-            "service_params": {
-              "category": "db",
-              "kind": "component",
-              "predicate_value": ""
-            },
-            "component_instance_id": "$bk_instance_id"
+            "component_instance_id": "$bk_instance_id",
+            "category": "db"
           },
           "dataType": "table",
           "api": "apm_meta.queryExceptionEvent"
@@ -1610,10 +1675,7 @@
           "fields": {
             "endpoint_name": "endpoint_name",
             "app_name": "app_name",
-            "service_name": "service_name",
-            "category": "service_category",
-            "kind": "service_kind",
-            "predicate_value": "service_predicate_value"
+            "service_name": "service_name"
           }
         }
       ]

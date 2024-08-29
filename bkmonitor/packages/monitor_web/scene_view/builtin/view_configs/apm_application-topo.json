@@ -13,22 +13,7 @@
       "instant": true,
       "targets": [
         {
-          "datasource": "apm_topo",
-          "dataType": "topo",
-          "api": "apm_topo.topoView",
-          "data": {
-            "query_type": "topo",
-            "app_name": "$app_name"
-          }
-        },
-        {
-          "datasource": "apm_topo",
-          "dataType": "table",
-          "api": "apm_topo.topoView",
-          "data": {
-            "query_type": "list",
-            "app_name": "$app_name"
-          }
+          "TODO": "TODO"
         }
       ],
       "gridPos": {
@@ -47,6 +32,21 @@
       "columns_toggle": false,
       "interval_select": false,
       "split_switcher": false
+    },
+    "overview_detail_panel": {
+      "title": "workload",
+      "type": "info",
+      "targets": [
+        {
+          "datasource": "info",
+          "dataType": "info",
+          "api": "apm_meta.serviceDetail",
+          "data": {
+            "app_name": "$app_name",
+            "service_name": "$service_name"
+          }
+        }
+      ]
     }
   }
 }

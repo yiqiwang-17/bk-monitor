@@ -391,7 +391,7 @@ export default class CommonPageNew extends tsc<ICommonPageProps, ICommonPageEven
               children: [],
             };
             total.push(item);
-          } else if (!!row.title) {
+          } else if (row.title) {
             const curGroup = total.find(group => group.id === curTagChartId);
             const child = {
               id: row.id,
@@ -467,6 +467,10 @@ export default class CommonPageNew extends tsc<ICommonPageProps, ICommonPageEven
       this.localPanels.length < 2 &&
       (this.localPanels?.[0].type === 'row' ? this.localPanels[0]?.panels?.some(item => item.type !== 'graph') : true)
     );
+  }
+  /* 当前单图模式下dashboard-panel是否需要padding */
+  get isSingleChartNoPadding() {
+    return this.isSingleChart && this.localPanels?.[0]?.type === 'apm-relation-graph';
   }
   /** 是否含overviewPanels */
   get hasOverviewPanels() {
@@ -593,8 +597,8 @@ export default class CommonPageNew extends tsc<ICommonPageProps, ICommonPageEven
         filters[key.replace('filter-', '')] = v;
         /** 处理主机详情 (主机、节点、服务实例) 互为冲突的字段 */
         if (['bk_inst_id', 'bk_target_service_instance_id'].some(item => key.includes(item))) {
-          delete filters.bk_target_cloud_id;
-          delete filters.bk_target_ip;
+          filters.bk_target_cloud_id = undefined;
+          filters.bk_target_ip = undefined;
         }
       } else if (key.match(/^var-/)) {
         variables[key.replace('var-', '')] = typeof val === 'string' && /^-?[1-9]?[0-9]*[1-9]+$/.test(val) ? +val : val;
@@ -745,6 +749,28 @@ export default class CommonPageNew extends tsc<ICommonPageProps, ICommonPageEven
       };
     }
     const data: IBookMark = await getSceneView(params).catch(() => ({ id: '', panels: [], name: '' }));
+    for (const item of data?.overview_panels || []) {
+      if (item.type === 'apm-relation-graph') {
+        item.options = {
+          ...item.options,
+          apm_relation_graph: {
+            app_name: this.filters.app_name || '',
+            service_name: this.filters.service_name || '',
+          },
+        };
+      }
+      if (item.type === 'apm-timeseries-chart' && item.options?.apm_time_series) {
+        item.options = {
+          ...item.options,
+          apm_time_series: {
+            ...item.options.apm_time_series,
+            app_name: this.filters.app_name || '',
+            service_name: this.filters.service_name || '',
+            enableContextmenu: true,
+          },
+        };
+      }
+    }
     const oldSelectPanel = this.sceneData?.options?.selector_panel?.targets
       ? JSON.stringify(this.sceneData.options.selector_panel.targets)
       : '';
@@ -1782,7 +1808,9 @@ export default class CommonPageNew extends tsc<ICommonPageProps, ICommonPageEven
                     )}
                   </div>
                   {/* 所有视图无数据提示 如apm视图无数据指引 */}
-                  {!!this.$slots.noData && <div class='view-has-no-data-main'>{this.$slots.noData}</div>}
+                  {this.$slots.noData && !this.isSingleChartNoPadding && (
+                    <div class='view-has-no-data-main'>{this.$slots.noData}</div>
+                  )}
                   {this.filtersReady ? (
                     <DashboardPanel
                       id={this.dashboardPanelId}
@@ -1792,6 +1820,7 @@ export default class CommonPageNew extends tsc<ICommonPageProps, ICommonPageEven
                       isSingleChart={this.isSingleChart}
                       needOverviewBtn={!!this.sceneData?.list?.length}
                       panels={this.dashbordMode === 'chart' ? this.preciseFilteringPanels : this.sceneData.list}
+                      singleChartNoPadding={this.isSingleChartNoPadding}
                       // onLinkTo={this.handleUpdateCurrentData}
                       onBackToOverview={this.handleBackToOverview}
                       onLintToDetail={this.handleLinkToDetail}
