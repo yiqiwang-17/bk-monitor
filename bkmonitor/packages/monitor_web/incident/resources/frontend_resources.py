@@ -120,7 +120,7 @@ class IncidentBaseResource(Resource):
                     "is_on_alert": entity.is_on_alert,
                     "alert_all_recorved": all(
                         map(
-                            lambda alert_id: snapshot.alert_entity_mapping[alert_id]["alert_status"]
+                            lambda alert_id: snapshot.alert_entity_mapping[alert_id].alert_status
                             in (EventStatus.RECOVERED, EventStatus.CLOSED),
                             alert_ids,
                         )
