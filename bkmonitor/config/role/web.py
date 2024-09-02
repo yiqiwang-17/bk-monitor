@@ -334,7 +334,7 @@ CELERYBEAT_SCHEDULE = {
     "monitor_web.tasks.update_aiops_dataflow_status": {
         "task": "monitor_web.tasks.update_aiops_dataflow_status",
         "schedule": crontab(minute="*/10"),
-        "enabled": False,
+        "enabled": True,
     },
     "fta_web.tasks.update_home_statistics": {
         "task": "fta_web.tasks.update_home_statistics",

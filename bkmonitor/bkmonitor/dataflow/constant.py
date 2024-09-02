@@ -56,6 +56,24 @@ class AccessStatus:
     FAILED = "failed"
 
 
+class AccessErrorType:
+    """
+    数据接入异常类型
+    """
+
+    # 接入数据源异常
+    ACCESS_DATAID = "access_dataid"
+
+    # 指标不支持
+    METRIC_NOT_SUPPORT = "metric_not_support"
+
+    # 创建计算平台FLow异常
+    CREATE_FLOW = "create_flow"
+
+    # 启动计算平台Flow异常
+    START_FLOW = "start_flow"
+
+
 class RTAccessBkDataStatus:
     # 等待中
     PENDING = "pending"
