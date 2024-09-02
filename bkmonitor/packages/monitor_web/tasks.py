@@ -797,7 +797,6 @@ def access_aiops_by_strategy_id(strategy_id):
         }
     )
     rt_query_config.save()
-    report_aiops_access_metrics(base_labels, AccessStatus.SUCCESS)
 
 
 @task(ignore_result=True)
@@ -1390,4 +1389,3 @@ def access_host_anomaly_detect_by_strategy_id(strategy_id):
         "agg_method": '',
     }
     rt_query_config.save()
-    report_aiops_access_metrics(base_labels, AccessStatus.SUCCESS)

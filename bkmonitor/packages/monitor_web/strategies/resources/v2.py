@@ -185,12 +185,13 @@ class GetStrategyListV2Resource(Resource):
     def filter_strategy_ids_by_id(cls, filter_dict: dict, filter_strategy_ids_set: set):
         """过滤策略ID"""
         if filter_dict["id"]:
-            ids = filter_dict["id"]
-            try:
-                ids = {int(_id) for _id in ids if _id}
-            except (ValueError, TypeError):
-                # 无效的过滤条件，查不出数据
-                ids = set()
+            ids = set()
+            for _id in filter_dict["id"]:
+                try:
+                    ids.add(int(_id.strip()))
+                except (ValueError, TypeError):
+                    # 无效的过滤条件，查不出数据
+                    continue
             filter_strategy_ids_set.intersection_update(ids)
 
     @classmethod
@@ -358,21 +359,24 @@ class GetStrategyListV2Resource(Resource):
         # 过滤插件ID
         if filter_dict["plugin_id"]:
             plugin_id = filter_dict["plugin_id"]
-            plugins = CollectorPluginMeta.objects.filter(plugin_id__in=plugin_id, bk_biz_id__in=[0, bk_biz_id])
-            plugin_table_ids = []
-            for plugin in plugins:
-                version = plugin.current_version
-                for table in version.info.metric_json:
-                    plugin_table_ids.append(version.get_result_table_id(plugin, table["table_name"]).lower())
+            plugins = CollectorPluginMeta.objects.filter(plugin_id__in=plugin_id, bk_biz_id__in=[0, bk_biz_id]).values(
+                "plugin_id"
+            )
+            # plugin_table_ids = []
+            # for plugin in plugins:
+            #     version = plugin.current_version
+            #     for table in version.info.metric_json:
+            #         plugin_table_ids.append(version.get_result_table_id(plugin, table["table_name"]).lower())
 
             plugin_strategy_ids = []
-            if plugin_table_ids:
-                query_configs = QueryConfigModel.objects.filter(strategy_id__in=filter_strategy_ids_set).only(
-                    "config", "strategy_id"
-                )
-                for qc in query_configs:
-                    if qc.config.get("result_table_id") in plugin_table_ids:
+            query_configs = QueryConfigModel.objects.filter(strategy_id__in=filter_strategy_ids_set).only(
+                "config", "strategy_id"
+            )
+            for qc in query_configs:
+                for plugin in plugins:
+                    if f"{plugin['plugin_id']}." in qc.config.get("result_table_id"):
                         plugin_strategy_ids.append(qc.strategy_id)
+                        break
 
             filter_strategy_ids_set.intersection_update(set(plugin_strategy_ids))
 
@@ -467,6 +471,9 @@ class GetStrategyListV2Resource(Resource):
             value = condition["value"]
             if not isinstance(value, list):
                 value = [value]
+            if len(value) == 1:
+                # 默认按list传递，多个值用 | 分割
+                value = [i.strip() for i in value[0].split(" | ")]
             filter_dict[key].extend(value)
 
         filter_strategy_ids_set = set(strategies.values_list("id", flat=True).distinct())
