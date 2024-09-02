@@ -281,6 +281,9 @@ export default {
   '存在关联的策略，不可删除': 'There are associated policies that cannot be deleted',
   '若添加进程，请前往配置平台 - 业务拓扑，在对应模块下新增':
     'If adding a process, please go to the configuration platform - business topology and add it under the corresponding module',
+  请求数: 'Request count',
+  对比时间: 'Comparison time',
+  参照时间: 'Reference time',
   告警系统事件: 'Alarm System Event',
   故障系统事件: 'Fault System Event',
   '关闭 AI 小鲸会话': 'Close the AI ​​Assistant session',
