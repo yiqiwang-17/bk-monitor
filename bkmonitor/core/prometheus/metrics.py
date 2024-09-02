@@ -1072,6 +1072,7 @@ AIOPS_ACCESS_TASK_COUNT = Gauge(
         "result",
         "retries",
         "exception",
+        "exc_type",
     ),
 )
 
