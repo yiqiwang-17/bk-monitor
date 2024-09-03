@@ -559,18 +559,20 @@ def polling_aiops_strategy_status(flow_id: int, task_id: int, base_labels: Dict,
             map(lambda item: item["message"], filter(lambda log: log["level"] == "ERROR", current_deploy_data["logs"]))
         )
         retries = query_config.intelligent_detect.get("retries", 0)
+        retries += 1
         err_msg = "create intelligent detect by strategy_id({}) failed: {}, retrying: {}/{}".format(
             base_labels["strategy_id"],
             flow_msg,
             retries,
             AIOPS_ACCESS_MAX_RETRIES,
         )
+
         # 重试启动任务
-        if retries < AIOPS_ACCESS_MAX_RETRIES:
+        if retries <= AIOPS_ACCESS_MAX_RETRIES:
             dataflow = DataFlow(flow_id)
             result = dataflow.start_or_restart_flow(is_start=False)
             query_config.intelligent_detect["status"] = AccessStatus.RUNNING
-            query_config.intelligent_detect["retries"] = retries + 1
+            query_config.intelligent_detect["retries"] = retries
             query_config.intelligent_detect["message"] = err_msg
             query_config.save()
             polling_aiops_strategy_status.apply_async(
@@ -579,7 +581,6 @@ def polling_aiops_strategy_status(flow_id: int, task_id: int, base_labels: Dict,
             )
         else:
             query_config.intelligent_detect["status"] = AccessStatus.FAILED
-            query_config.intelligent_detect["message"] = err_msg
             query_config.save()
 
         report_aiops_access_metrics(base_labels, AccessStatus.FAILED, err_msg, AccessErrorType.START_FLOW)
@@ -751,6 +752,7 @@ def access_aiops_by_strategy_id(strategy_id):
         if retries < AIOPS_ACCESS_MAX_RETRIES:
             # 6.5.1 重试次数小于最大重试次数，则继续尝试接入智能检测算法，
             # 并更新算法接入状态为"运行中"，且记录重试次数和错误信息
+            retries += 1
             err_msg = "create intelligent detect by strategy_id({}) failed: {}, retrying: {}/{}".format(
                 strategy.id,
                 e,
@@ -760,7 +762,7 @@ def access_aiops_by_strategy_id(strategy_id):
             logger.exception(err_msg)
             access_aiops_by_strategy_id.apply_async(args=(strategy_id,), countdown=AIOPS_ACCESS_RETRY_INTERVAL)
             rt_query_config.intelligent_detect["status"] = AccessStatus.RUNNING
-            rt_query_config.intelligent_detect["retries"] = retries + 1
+            rt_query_config.intelligent_detect["retries"] = retries
             rt_query_config.intelligent_detect["message"] = err_msg
             rt_query_config.save()
             report_aiops_access_metrics(base_labels, AccessStatus.FAILED, err_msg, AccessErrorType.CREATE_FLOW)
@@ -1352,6 +1354,7 @@ def access_host_anomaly_detect_by_strategy_id(strategy_id):
         if retries < AIOPS_ACCESS_MAX_RETRIES:
             # 3.5.1 重试次数小于最大重试次数，则继续尝试接入主机异常检测算法，
             # 并更新算法接入状态为"运行中"，且记录重试次数和错误信息
+            retries += 1
             err_msg = "create intelligent detect by strategy_id({}) failed: {}, retrying: {}/{}".format(
                 strategy.id,
                 e,
@@ -1363,7 +1366,7 @@ def access_host_anomaly_detect_by_strategy_id(strategy_id):
                 args=(strategy_id,), countdown=AIOPS_ACCESS_RETRY_INTERVAL
             )
             rt_query_config.intelligent_detect["status"] = AccessStatus.RUNNING
-            rt_query_config.intelligent_detect["retries"] = retries + 1
+            rt_query_config.intelligent_detect["retries"] = retries
             rt_query_config.intelligent_detect["message"] = err_msg
             rt_query_config.save()
             report_aiops_access_metrics(base_labels, AccessStatus.FAILED, err_msg, AccessErrorType.CREATE_FLOW)
