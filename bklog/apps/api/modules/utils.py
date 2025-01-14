@@ -28,6 +28,7 @@ from django.utils import translation
 from apps.log_esquery.permission import EsquerySearchPermissions
 from apps.utils import build_auth_args
 from apps.utils.local import get_request
+from apps.utils.log import logger
 from bkm_space.define import SpaceTypeEnum
 from bkm_space.utils import bk_biz_id_to_space_uid, space_uid_to_bk_biz_id
 
@@ -189,6 +190,8 @@ else:
     def add_esb_info_before_request_for_bkdata_token(params):  # pylint: disable=function-name-too-long
         req = get_request()
         skip_check = getattr(req, "skip_check", False)
+        logger.info("test log: ", settings.BKAPP_IS_BKLOG_API, skip_check, getattr(req, "external_user", None),
+                    req.headers.get("X-SOURCE-APP-CODE", ""))
         if settings.BKAPP_IS_BKLOG_API and not skip_check:
             # 外部版请求转发 / 内嵌日志api页面 已通过日志saas鉴权逻辑，默认使用超级权限
             if (
@@ -197,6 +200,7 @@ else:
             ):
                 params = update_bkdata_auth_info(params)
             else:
+                logger.info("test log: get auth info")
                 auth_info = EsquerySearchPermissions.get_auth_info(req)
                 if auth_info["bk_app_code"] in settings.ESQUERY_WHITE_LIST:
                     # 在白名单内的 app 使用超级权限
